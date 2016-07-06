@@ -1,0 +1,15 @@
+Ctrlflow Automated Error Reporting Clients
+==========================================
+
+The https://www.ctrlflow.com/automated-error-reporting/[Ctrlflow Automated Error Reporting (AER) server] can accept error reports from a number of clients.
+
+At the moment, the following clients are available:
+
+Ctrlflow AER Logback Client::
+If you are developing a *Java application* that uses the popular http://logback.qos.ch/[Logback] logging framework, you can configure Logback to use the Ctrlflow AER Logback Client to send any logged errors to your server.
+
+Eclipse Automated Error Reporting Plug-in (external)::
+If you are developing an *Eclipse plug-in*, your plug-in can register itself with the Eclipse Automated Error Reporting plug-in to send errors from the Eclipse error log to your server.
++
+NOTE: This client is maintained by the Eclipse Packaging Project (EPP).
+See https://wiki.eclipse.org/EPP/Logging[the EPP Wiki] for further information.

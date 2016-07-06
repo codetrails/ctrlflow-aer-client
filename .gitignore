@@ -1,0 +1,7 @@
+# Ignore derived files
+target/
+
+# Ignore files specific to the Eclipse IDE
+.classpath
+.project
+.settings/

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ctrlflow.aer.client.repositories</groupId>
+        <artifactId>repositories</artifactId>
+        <version>@project.version@</version>
+    </parent>
+
+    <artifactId>p2-repository</artifactId>
+    <packaging>eclipse-repository</packaging>
+
+    <name>Ctrlflow Automated Error Reporting Clients P2 Repository</name>
+    <description>P2 repository containing Ctrlflow Automated Error Reporting client implementation bundles.</description>
+    <url>https://www.ctrlflow.com/automated-error-reporting/</url>
+
+    <scm>
+        <connection>scm:git:https://github.com/codetrails/ctrlflow-aer-client.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/codetrails/ctrlflow-aer-client.git</developerConnection>
+        <url>https://github.com/codetrails/ctrlflow-aer-client/tree/master/repositories/p2-repository-invoker/src/main/tycho</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>orbit-neon-r</id>
+            <layout>p2</layout>
+            <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ctrlflow.aer.client.bundles</groupId>
+            <artifactId>com.ctrlflow.aer.client.dto</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ctrlflow.aer.client.bundles</groupId>
+            <artifactId>com.ctrlflow.aer.client.logback</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>target-platform-configuration</artifactId>
+                    <configuration>
+                        <pomDependencies>consider</pomDependencies>
+                        <environments>
+                            <environment>
+                                <os>all</os>
+                                <ws>all</ws>
+                                <arch>all</arch>
+                            </environment>
+                        </environments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

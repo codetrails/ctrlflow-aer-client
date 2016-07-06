@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+    <category-def name="ctrlflow-aer-client" label="Ctrlflow Automated Error Reporting Client Bundles" />
+    <bundle id="com.ctrlflow.aer.client.dto">
+        <category name="ctrlflow-aer-client" />
+    </bundle>
+    <bundle id="com.ctrlflow.aer.client.logback">
+        <category name="ctrlflow-aer-client" />
+    </bundle>
+</site>
