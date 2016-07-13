@@ -4,7 +4,7 @@
 
     <groupId>com.ctrlflow.aer.client</groupId>
     <artifactId>aggregator</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Ctrlflow Automated Error Reporting Clients</name>
@@ -46,7 +46,7 @@
         <connection>scm:git:https://github.com/codetrails/ctrlflow-aer-client.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/codetrails/ctrlflow-aer-client.git</developerConnection>
         <url>https://github.com/codetrails/ctrlflow-aer-client/tree/master</url>
-        <tag>releases/2.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
     <issueManagement>
         <url>https://github.com/codetrails/ctrlflow-aer-client/issues</url>
@@ -74,12 +74,12 @@
             <dependency>
                 <groupId>com.ctrlflow.aer.client.bundles</groupId>
                 <artifactId>com.ctrlflow.aer.client.dto</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.ctrlflow.aer.client.bundles</groupId>
                 <artifactId>com.ctrlflow.aer.client.logback</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.google.code.gson</groupId>
