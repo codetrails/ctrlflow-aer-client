@@ -7,9 +7,41 @@ At the moment, the following clients are available:
 
 Ctrlflow AER Logback Client::
 If you are developing a *Java application* that uses the popular http://logback.qos.ch/[Logback] logging framework, you can configure Logback to use the Ctrlflow AER Logback Client to send any logged errors to your server.
++
+*Examples* on how to use this client are maintained in a https://github.com/codetrails/ctrlflow-aer-client-examples[separate project].
 
 Eclipse Automated Error Reporting Plug-in (external)::
 If you are developing an *Eclipse plug-in*, your plug-in can register itself with the Eclipse Automated Error Reporting plug-in to send errors from the Eclipse error log to your server.
 +
 NOTE: This client is maintained by the Eclipse Packaging Project (EPP).
 See https://wiki.eclipse.org/EPP/Logging[the EPP Wiki] for further information.
+
+Downloading
+-----------
+
+Maven, Gradle, SBT, etc.
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+All clients maintained by this project are available for download using Maven, Gradle, SBT, and similar build tools from the https://search.maven.org/[Central Repository] (aka Maven Central) under a `groupId` of https://search.maven.org/#search|ga|1|g%3Acom.ctrlflow.aer.client.bundles[`com.ctrlflow.aer.client.bundles`].
+
+Equinox p2
+~~~~~~~~~~
+
+All clients maintained by this project are available for download using https://wiki.eclipse.org/Equinox/p2[Equinox p2] from https://download.ctrlflow.com/aer/client/2.0.0/p2/.
+
+Building
+--------
+
+All clients maintained by this project are built with http://maven.apache.org/[Apache Maven].
+To install them into your local Maven repisitory, execute the following command:
+
+----
+mvn clean install
+----
+
+If you want to contribute changes back to this project via a pull request, please make sure that your changes pass all our quality checks first.
+To perform these checks, execute the following command:
+
+----
+mvn clean install -Dquality-checks=true
+----
