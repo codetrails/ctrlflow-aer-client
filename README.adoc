@@ -27,13 +27,13 @@ All clients maintained by this project are available for download using Maven, G
 Equinox p2
 ~~~~~~~~~~
 
-All clients maintained by this project are available for download using https://wiki.eclipse.org/Equinox/p2[Equinox p2] from https://download.ctrlflow.com/aer/client/2.0.0/p2/.
+All clients maintained by this project are available for download using https://wiki.eclipse.org/Equinox/p2[Equinox p2] from `https://download.ctrlflow.com/aer/client/2.0.0/p2/`.
 
 Building
 --------
 
 All clients maintained by this project are built with http://maven.apache.org/[Apache Maven].
-To install them into your local Maven repisitory, execute the following command:
+To install them into your local Maven repository, execute the following command:
 
 ----
 mvn clean install
