@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * @since 2.0.0
+ */
 @SuppressWarnings("all")
 public class Incident {
     private String id;

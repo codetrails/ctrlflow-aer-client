@@ -3,6 +3,9 @@ package com.ctrlflow.aer.client.dto;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * @since 2.0.0
+ */
 public class StackTraceElement {
 
     private String fileName;

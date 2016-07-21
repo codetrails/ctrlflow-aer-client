@@ -2,6 +2,9 @@ package com.ctrlflow.aer.client.dto;
 
 import java.util.Arrays;
 
+/**
+ * @since 2.0.0
+ */
 public class Status {
     private static final Status[] EMPTY = new Status[0];
 

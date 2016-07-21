@@ -1,5 +1,8 @@
 package com.ctrlflow.aer.client.dto;
 
+/**
+ * @since 2.0.0
+ */
 @SuppressWarnings("all")
 public class Bundle {
 

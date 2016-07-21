@@ -41,6 +41,8 @@ import ch.qos.logback.core.AppenderBase;
  * appender will collect the {@link ClassPackagingData} and include them as {@link Bundle} in the incident. In addition,
  * {@link LoggerContext#setMaxCallerDataDepth(int)} should be set to a value high enough to get the full stacktrace of a
  * logging call.
+ * 
+ * @since 2.0.0
  */
 public class AerAppender extends AppenderBase<ILoggingEvent> {
 
@@ -199,7 +201,7 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
     }
 
     @VisibleForTesting
-    protected void sendIncident(Incident i) {
+    void sendIncident(Incident i) {
         try {
             IO.sendIncident(i, url);
         } catch (HttpResponseException e) {
@@ -251,10 +253,11 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         this.email = email;
     }
 
-    public static final class NoStackTrace extends java.lang.Throwable {
+    private static final class NoStackTrace extends java.lang.Throwable {
+
         private static final long serialVersionUID = 1L;
 
-        public NoStackTrace() {
+        private NoStackTrace() {
             super("This event was logged without a stacktrace. The caller data is used instead.");
         }
     }

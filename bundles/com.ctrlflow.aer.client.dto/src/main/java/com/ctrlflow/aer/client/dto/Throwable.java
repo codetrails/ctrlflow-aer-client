@@ -2,6 +2,9 @@ package com.ctrlflow.aer.client.dto;
 
 import java.util.Arrays;
 
+/**
+ * @since 2.0.0
+ */
 public class Throwable {
 
     private static final StackTraceElement[] EMPTY = new StackTraceElement[0];
