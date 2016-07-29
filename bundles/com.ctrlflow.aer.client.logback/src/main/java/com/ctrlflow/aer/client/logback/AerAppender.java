@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Queue;
@@ -112,7 +113,7 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         }
         Throwable throwable = convert(throwableProxy);
         LinkedHashSet<ClassPackagingData> data = collectPackagingData(throwableProxy);
-        List<Bundle> presentBundles = Lists.newArrayList();
+        List<Bundle> presentBundles = new ArrayList<>();
         for (ClassPackagingData classPackagingData : data) {
             Bundle bundle = toBundle(classPackagingData);
             if (!presentBundles.contains(bundle)) {
@@ -158,7 +159,7 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
     }
 
     private LinkedHashSet<ClassPackagingData> collectPackagingData(IThrowableProxy throwableProxy) {
-        LinkedHashSet<ClassPackagingData> classPackagingData = Sets.newLinkedHashSet();
+        LinkedHashSet<ClassPackagingData> classPackagingData = new LinkedHashSet<>();
         for (StackTraceElementProxy proxy : throwableProxy.getStackTraceElementProxyArray()) {
             ClassPackagingData data = proxy.getClassPackagingData();
             if (data != null) {

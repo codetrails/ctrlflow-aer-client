@@ -2,6 +2,7 @@ package com.ctrlflow.aer.client.logback.internal;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.GzipCompressingEntity;
@@ -13,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ctrlflow.aer.client.dto.Incident;
-import com.google.common.base.Charsets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -29,7 +29,7 @@ public class IO {
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(incident);
         StringEntity stringEntity = new StringEntity(json,
-                ContentType.APPLICATION_OCTET_STREAM.withCharset(Charsets.UTF_8));
+                ContentType.APPLICATION_OCTET_STREAM.withCharset(StandardCharsets.UTF_8));
         HttpEntity entity = new GzipCompressingEntity(stringEntity);
 
         URI target = null;
