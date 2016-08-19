@@ -12,8 +12,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.http.client.HttpResponseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.ctrlflow.aer.client.dto.Bundle;
 import com.ctrlflow.aer.client.dto.Incident;
@@ -23,8 +21,6 @@ import com.ctrlflow.aer.client.dto.Throwable;
 import com.ctrlflow.aer.client.logback.internal.IO;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.EvictingQueue;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import ch.qos.logback.classic.AsyncAppender;
 import ch.qos.logback.classic.LoggerContext;
@@ -35,6 +31,7 @@ import ch.qos.logback.classic.spi.PackagingDataCalculator;
 import ch.qos.logback.classic.spi.StackTraceElementProxy;
 import ch.qos.logback.classic.spi.ThrowableProxy;
 import ch.qos.logback.core.AppenderBase;
+import ch.qos.logback.core.status.WarnStatus;
 
 /**
  * Appender which creates incidents for log events and sends them to a given url. It is recommended to attach the
@@ -46,8 +43,6 @@ import ch.qos.logback.core.AppenderBase;
  * @since 2.0.0
  */
 public class AerAppender extends AppenderBase<ILoggingEvent> {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AerAppender.class);
 
     private static final UUID HOST_ID = computeHostId();
 
@@ -206,9 +201,9 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         try {
             IO.sendIncident(i, url);
         } catch (HttpResponseException e) {
-            LOG.debug("Failed to send incident, status code: {}", e.getStatusCode(), e);
+            addStatus(new WarnStatus(String.format("Failed to send incident '%s'. HTTP status code: %s", i.getStatus().getMessage(), e.getStatusCode()), this, e));
         } catch (Exception e) {
-            LOG.debug("Failed to send incident ''{}''. Error:", i.getStatus().getMessage(), e.getMessage());
+            addStatus(new WarnStatus(String.format("Failed to send incident '%s'", i.getStatus().getMessage()), this, e));
         }
     }
 

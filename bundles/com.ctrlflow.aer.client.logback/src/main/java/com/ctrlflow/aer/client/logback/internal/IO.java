@@ -1,5 +1,6 @@
 package com.ctrlflow.aer.client.logback.internal;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -10,22 +11,20 @@ import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.ctrlflow.aer.client.dto.Incident;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class IO {
-    private static final Logger LOG = LoggerFactory.getLogger(IO.class);
+
     private static final int CONNECTION_TIMEOUT_MS = 5000;
 
     /**
-     * Sends an incident to the given url, compressed as {@link GzipCompressingEntity}. Returns the server response as
+     * Sends an incident to the given URI, compressed as {@link GzipCompressingEntity}. Returns the server response as
      * string or throws an exception if anything goes wrong.
      */
-    public static String sendIncident(Incident incident, String url) throws Exception {
+    public static String sendIncident(Incident incident, String uri) throws IOException {
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(incident);
         StringEntity stringEntity = new StringEntity(json,
@@ -34,9 +33,9 @@ public class IO {
 
         URI target = null;
         try {
-            target = new URI(url);
+            target = new URI(uri);
         } catch (URISyntaxException e) {
-            LOG.error("Bad url", e);
+            throw new IOException("Bad URI", e);
         }
         Request request = Request.Post(target)
                 .body(entity)
