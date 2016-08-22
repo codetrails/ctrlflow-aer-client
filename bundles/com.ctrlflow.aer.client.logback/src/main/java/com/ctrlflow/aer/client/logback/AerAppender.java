@@ -1,7 +1,5 @@
 package com.ctrlflow.aer.client.logback;
 
-import static org.apache.commons.lang3.StringUtils.*;
-
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
@@ -10,7 +8,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
 
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.http.client.HttpResponseException;
 
 import com.ctrlflow.aer.client.dto.Bundle;
@@ -20,6 +17,7 @@ import com.ctrlflow.aer.client.dto.Status;
 import com.ctrlflow.aer.client.dto.Throwable;
 import com.ctrlflow.aer.client.logback.internal.IO;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Strings;
 import com.google.common.collect.EvictingQueue;
 
 import ch.qos.logback.classic.AsyncAppender;
@@ -63,8 +61,22 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
 
     private String productId = "undefined";
     private String buildId = "undefined";
-    private String userName = SystemUtils.USER_NAME;
-    private String email = SystemUtils.USER_NAME + "@localhost";
+    private String userName = getSystemProperty("user.name");
+    private String email = userName + "@localhost";
+
+    private final String osgiArch = Strings.nullToEmpty(getSystemProperty("os.arch"));
+    private final String osgiOs = Strings.nullToEmpty(getSystemProperty("os.name"));
+    private final String osgiOsVersion = Strings.nullToEmpty(getSystemProperty("os.version"));
+    private final String javaRuntimeVersion = Strings.nullToEmpty(getSystemProperty("java.runtime.version"));
+
+    private String getSystemProperty(String property) {
+        try {
+            return System.getProperty(property);
+        } catch (SecurityException e) {
+            addStatus(new WarnStatus(String.format("Cannot read system property '%s'.", property), this, e));
+            return null;
+        }
+    }
 
     public String getUrl() {
         return url;
@@ -85,17 +97,18 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
 
     private Incident createIncident(ILoggingEvent event) {
         event.prepareForDeferredProcessing();
+
         Incident incident = new Incident();
         incident.setAnonymousId(HOST_ID);
         incident.setEclipseProduct(productId);
         incident.setEclipseBuildId(buildId);
         incident.setName(userName);
         incident.setEmail(email);
-        incident.setOsgiArch(defaultString(SystemUtils.OS_ARCH));
-        incident.setOsgiOs(defaultString(SystemUtils.OS_NAME));
-        incident.setOsgiOsVersion(defaultString(SystemUtils.OS_VERSION));
+        incident.setOsgiArch(osgiArch);
+        incident.setOsgiOs(osgiOs);
+        incident.setOsgiOsVersion(osgiOsVersion);
         incident.setOsgiWs("");
-        incident.setJavaRuntimeVersion(defaultString(SystemUtils.JAVA_RUNTIME_VERSION));
+        incident.setJavaRuntimeVersion(javaRuntimeVersion);
         Status status = new Status();
         IThrowableProxy throwableProxy = event.getThrowableProxy();
         // if proxy is null, no exception was logged. add a synthetic one with the caller data and calculate the
@@ -126,7 +139,8 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         }
         status.setException(throwable);
         status.setMessage(event.getFormattedMessage());
-        if (isBlank(status.getMessage())) {
+
+        if (Strings.isNullOrEmpty(status.getMessage())) {
             status.setMessage(throwable.getMessage());
         }
         incident.setStatus(status);
