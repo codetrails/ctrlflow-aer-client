@@ -1,8 +1,10 @@
 package com.ctrlflow.aer.client.dto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -46,6 +48,11 @@ public class Incident {
     private Status status;
 
     private Set<String> problemIds = new HashSet<>();
+
+    /**
+     * @since 2.0.1
+     */
+    private Map<String, String> auxiliaryInformation = new HashMap<>();
 
     public boolean hasId() {
         return this.id != null;
@@ -304,6 +311,35 @@ public class Incident {
 
     public boolean hasBugId() {
         return true;
+    }
+
+    /**
+     * @since 2.0.1
+     */
+    public Map<String, String> getAuxiliaryInformation() {
+        return auxiliaryInformation;
+    }
+
+    /**
+     * @since 2.0.1
+     */
+    public void setAuxiliaryInformation(Map<String, String> auxiliaryInformation) {
+        this.auxiliaryInformation = auxiliaryInformation;
+    }
+
+    /**
+     * @since 2.0.1
+     */
+    public Incident withAuxiliaryInformation(final Map<String, String> auxiliaryInformation) {
+        this.auxiliaryInformation = auxiliaryInformation;
+        return this;
+    }
+
+    /**
+     * @since 2.0.1
+     */
+    public boolean hasAuxiliaryInformation() {
+        return auxiliaryInformation != null && !auxiliaryInformation.isEmpty();
     }
 
     @Override
