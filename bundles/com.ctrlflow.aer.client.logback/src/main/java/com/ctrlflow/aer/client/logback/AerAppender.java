@@ -3,8 +3,10 @@ package com.ctrlflow.aer.client.logback;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 
@@ -32,11 +34,10 @@ import ch.qos.logback.core.AppenderBase;
 import ch.qos.logback.core.status.WarnStatus;
 
 /**
- * Appender which creates incidents for log events and sends them to a given url. It is recommended to attach the
- * appender to an {@link AsyncAppender}. If {@link LoggerContext#setPackagingDataEnabled(boolean)} is set to true, the
- * appender will collect the {@link ClassPackagingData} and include them as {@link Bundle} in the incident. In addition,
- * {@link LoggerContext#setMaxCallerDataDepth(int)} should be set to a value high enough to get the full stacktrace of a
- * logging call.
+ * Appender which creates incidents for log events and sends them to a given url. It is recommended to attach the appender to an
+ * {@link AsyncAppender}. If {@link LoggerContext#setPackagingDataEnabled(boolean)} is set to true, the appender will collect the
+ * {@link ClassPackagingData} and include them as {@link Bundle} in the incident. In addition,
+ * {@link LoggerContext#setMaxCallerDataDepth(int)} should be set to a value high enough to get the full stacktrace of a logging call.
  * 
  * @since 2.0.0
  */
@@ -68,6 +69,8 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
     private final String osgiOs = Strings.nullToEmpty(getSystemProperty("os.name"));
     private final String osgiOsVersion = Strings.nullToEmpty(getSystemProperty("os.version"));
     private final String javaRuntimeVersion = Strings.nullToEmpty(getSystemProperty("java.runtime.version"));
+
+    private Map<String, String> auxiliaryInformation = new HashMap<>();
 
     private String getSystemProperty(String property) {
         try {
@@ -109,6 +112,7 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         incident.setOsgiOsVersion(osgiOsVersion);
         incident.setOsgiWs("");
         incident.setJavaRuntimeVersion(javaRuntimeVersion);
+        incident.setAuxiliaryInformation(auxiliaryInformation);
         Status status = new Status();
         IThrowableProxy throwableProxy = event.getThrowableProxy();
         // if proxy is null, no exception was logged. add a synthetic one with the caller data and calculate the
@@ -215,7 +219,9 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         try {
             IO.sendIncident(i, url);
         } catch (HttpResponseException e) {
-            addStatus(new WarnStatus(String.format("Failed to send incident '%s'. HTTP status code: %s", i.getStatus().getMessage(), e.getStatusCode()), this, e));
+            addStatus(new WarnStatus(
+                    String.format("Failed to send incident '%s'. HTTP status code: %s", i.getStatus().getMessage(), e.getStatusCode()),
+                    this, e));
         } catch (Exception e) {
             addStatus(new WarnStatus(String.format("Failed to send incident '%s'", i.getStatus().getMessage()), this, e));
         }
@@ -261,6 +267,36 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Map<String, String> getAuxiliaryInformation() {
+        return auxiliaryInformation;
+    }
+
+    public void addAuxiliaryInformation(AuxiliaryInformation info) {
+        this.auxiliaryInformation.put(info.getKey(), info.getValue());
+    }
+
+    public static class AuxiliaryInformation {
+
+        private String key;
+        private String value;
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
     }
 
     private static final class NoStackTrace extends java.lang.Throwable {
