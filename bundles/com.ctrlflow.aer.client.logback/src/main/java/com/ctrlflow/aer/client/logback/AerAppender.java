@@ -273,8 +273,30 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         return auxiliaryInformation;
     }
 
-    public void setAuxiliaryInformation(Map<String, String> auxiliaryInformation) {
-        this.auxiliaryInformation = auxiliaryInformation;
+    public void addAuxiliaryInformation(AuxiliaryInformation info) {
+        this.auxiliaryInformation.put(info.getKey(), info.getValue());
+    }
+
+    public static class AuxiliaryInformation {
+
+        private String key;
+        private String value;
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
     }
 
     private static final class NoStackTrace extends java.lang.Throwable {

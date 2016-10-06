@@ -1,6 +1,7 @@
 package com.ctrlflow.aer.client.dto;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +53,7 @@ public class Incident {
     /**
      * @since 2.0.1
      */
-    private Map<String, String> auxiliaryInformation = new HashMap<>();
+    private Map<String, String> auxiliaryInformation;
 
     public boolean hasId() {
         return this.id != null;
@@ -317,7 +318,7 @@ public class Incident {
      * @since 2.0.1
      */
     public Map<String, String> getAuxiliaryInformation() {
-        return auxiliaryInformation;
+        return auxiliaryInformation != null ? auxiliaryInformation : Collections.emptyMap();
     }
 
     /**
