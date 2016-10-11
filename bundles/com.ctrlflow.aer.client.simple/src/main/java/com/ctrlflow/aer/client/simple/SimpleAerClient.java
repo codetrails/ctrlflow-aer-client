@@ -1,4 +1,4 @@
-package com.ctrlflow.aer.client.logback.internal;
+package com.ctrlflow.aer.client.simple;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,7 +16,7 @@ import com.ctrlflow.aer.client.dto.Incident;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class IO {
+public class SimpleAerClient {
 
     private static final int CONNECTION_TIMEOUT_MS = 5000;
 
@@ -24,7 +24,7 @@ public class IO {
      * Sends an incident to the given URI, compressed as {@link GzipCompressingEntity}. Returns the server response as
      * string or throws an exception if anything goes wrong.
      */
-    public static String sendIncident(Incident incident, String uri) throws IOException {
+    public static String send(Incident incident, String uri) throws IOException {
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(incident);
         StringEntity stringEntity = new StringEntity(json,

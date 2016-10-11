@@ -16,7 +16,7 @@ public class StackTraceElement {
 
     private int lineNumber;
 
-    private boolean nativeMethod;
+    private boolean native_;
 
     private Set<String> tags = new TreeSet<>();
 
@@ -61,11 +61,11 @@ public class StackTraceElement {
     }
 
     public boolean isNative() {
-        return nativeMethod;
+        return native_;
     }
 
     public void setNative(boolean nativeMethod) {
-        this.nativeMethod = nativeMethod;
+        this.native_ = nativeMethod;
     }
 
     public Set<String> getTags() {
@@ -84,7 +84,7 @@ public class StackTraceElement {
         result = prime * result + (methodName == null ? 0 : methodName.hashCode());
         result = prime * result + (fileName == null ? 0 : fileName.hashCode());
         result = prime * result + lineNumber;
-        result = prime * result + (nativeMethod ? 1231 : 1237);
+        result = prime * result + (native_ ? 1231 : 1237);
         result = prime * result + (tags == null ? 0 : tags.hashCode());
         return result;
     }
@@ -125,7 +125,7 @@ public class StackTraceElement {
         if (lineNumber != other.lineNumber) {
             return false;
         }
-        if (nativeMethod != other.nativeMethod) {
+        if (native_ != other.native_) {
             return false;
         }
         if (tags == null) {

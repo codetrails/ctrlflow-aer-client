@@ -36,6 +36,10 @@
             <artifactId>com.ctrlflow.aer.client.dto</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.ctrlflow.aer.client.bundles</groupId>
+            <artifactId>com.ctrlflow.aer.client.simple</artifactId>
+        </dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logbackVersion}</version>
@@ -46,22 +50,8 @@
             <version>${logbackVersion}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore-osgi</artifactId>
-            <version>${httpCoreVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient-osgi</artifactId>
-            <version>${httpClientVersion}</version>
         </dependency>
         <!-- Test scope -->
         <dependency>

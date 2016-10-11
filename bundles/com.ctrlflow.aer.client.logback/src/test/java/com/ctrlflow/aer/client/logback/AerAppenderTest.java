@@ -153,5 +153,4 @@ public class AerAppenderTest {
     public void tearDown() {
         sut.stop();
     }
-
 }

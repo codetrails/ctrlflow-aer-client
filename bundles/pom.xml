@@ -20,6 +20,7 @@
     <modules>
         <module>com.ctrlflow.aer.client.dto</module>
         <module>com.ctrlflow.aer.client.logback</module>
+        <module>com.ctrlflow.aer.client.simple</module>
     </modules>
 
     <scm>

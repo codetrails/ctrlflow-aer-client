@@ -1,5 +1,6 @@
 package com.ctrlflow.aer.client.logback;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.UUID;
 
@@ -17,7 +19,8 @@ import com.ctrlflow.aer.client.dto.Incident;
 import com.ctrlflow.aer.client.dto.StackTraceElement;
 import com.ctrlflow.aer.client.dto.Status;
 import com.ctrlflow.aer.client.dto.Throwable;
-import com.ctrlflow.aer.client.logback.internal.IO;
+import com.ctrlflow.aer.client.simple.IncidentBuilder;
+import com.ctrlflow.aer.client.simple.SimpleAerClient;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.EvictingQueue;
@@ -37,7 +40,8 @@ import ch.qos.logback.core.status.WarnStatus;
  * Appender which creates incidents for log events and sends them to a given url. It is recommended to attach the appender to an
  * {@link AsyncAppender}. If {@link LoggerContext#setPackagingDataEnabled(boolean)} is set to true, the appender will collect the
  * {@link ClassPackagingData} and include them as {@link Bundle} in the incident. In addition,
- * {@link LoggerContext#setMaxCallerDataDepth(int)} should be set to a value high enough to get the full stacktrace of a logging call.
+ * {@link LoggerContext#setMaxCallerDataDepth(int)} should be set to a value high enough to get the full stacktrace of a logging
+ * call.
  * 
  * @since 2.0.0
  */
@@ -101,19 +105,6 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
     private Incident createIncident(ILoggingEvent event) {
         event.prepareForDeferredProcessing();
 
-        Incident incident = new Incident();
-        incident.setAnonymousId(HOST_ID);
-        incident.setEclipseProduct(productId);
-        incident.setEclipseBuildId(buildId);
-        incident.setName(userName);
-        incident.setEmail(email);
-        incident.setOsgiArch(osgiArch);
-        incident.setOsgiOs(osgiOs);
-        incident.setOsgiOsVersion(osgiOsVersion);
-        incident.setOsgiWs("");
-        incident.setJavaRuntimeVersion(javaRuntimeVersion);
-        incident.setAuxiliaryInformation(auxiliaryInformation);
-        Status status = new Status();
         IThrowableProxy throwableProxy = event.getThrowableProxy();
         // if proxy is null, no exception was logged. add a synthetic one with the caller data and calculate the
         // packagingData
@@ -124,6 +115,7 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
             new PackagingDataCalculator().calculate(throwableProxy);
         }
         Throwable throwable = convert(throwableProxy);
+
         LinkedHashSet<ClassPackagingData> data = collectPackagingData(throwableProxy);
         List<Bundle> presentBundles = new ArrayList<>();
         for (ClassPackagingData classPackagingData : data) {
@@ -132,23 +124,31 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
                 presentBundles.add(bundle);
             }
         }
-        incident.setPresentBundles(presentBundles);
-        if (!presentBundles.isEmpty()) {
-            Bundle bundle = presentBundles.get(0);
-            status.setPluginId(bundle.getName());
-            status.setPluginVersion(bundle.getVersion());
-        } else {
-            status.setPluginId("unknown");
-            status.setPluginVersion("unknown");
-        }
-        status.setException(throwable);
-        status.setMessage(event.getFormattedMessage());
 
-        if (Strings.isNullOrEmpty(status.getMessage())) {
-            status.setMessage(throwable.getMessage());
+        IncidentBuilder builder = IncidentBuilder.from(throwable);
+
+        if (!presentBundles.isEmpty()) {
+            builder.withLoggingBundle(presentBundles.get(0));
         }
-        incident.setStatus(status);
-        return incident;
+        for (Bundle presentBundle : presentBundles) {
+            builder.withPresentBundle(presentBundle);
+        }
+
+        builder.withLogMessage(event.getFormattedMessage());
+
+        builder.withAnonymousId(HOST_ID).withUserName(userName).withUserEmail(email);
+
+        builder.withEclipseProduct(productId).withEclipseBuildId(buildId);
+
+        builder.withOsgiArch(osgiArch).withOsgiOs(osgiOs).withOsgiOsVersion(osgiOsVersion).withOsgiWs("");
+
+        builder.withJavaRuntimeVersion(javaRuntimeVersion);
+
+        for (Entry<String, String> entry : auxiliaryInformation.entrySet()) {
+            builder.withAuxiliaryInformation(entry.getKey(), entry.getValue());
+        }
+
+        return builder.build();
     }
 
     @VisibleForTesting
@@ -217,13 +217,10 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
     @VisibleForTesting
     void sendIncident(Incident i) {
         try {
-            IO.sendIncident(i, url);
-        } catch (HttpResponseException e) {
-            addStatus(new WarnStatus(
-                    String.format("Failed to send incident '%s'. HTTP status code: %s", i.getStatus().getMessage(), e.getStatusCode()),
-                    this, e));
-        } catch (Exception e) {
-            addStatus(new WarnStatus(String.format("Failed to send incident '%s'", i.getStatus().getMessage()), this, e));
+            SimpleAerClient.send(i, url);
+        } catch (IOException e) {
+            addStatus(
+                    new WarnStatus(String.format("Failed to send incident '%s'", i.getStatus().getMessage()), this, e));
         }
     }
 

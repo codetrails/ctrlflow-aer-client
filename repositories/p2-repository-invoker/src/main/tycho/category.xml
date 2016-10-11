@@ -7,4 +7,7 @@
     <bundle id="com.ctrlflow.aer.client.logback">
         <category name="ctrlflow-aer-client" />
     </bundle>
+    <bundle id="com.ctrlflow.aer.client.simple">
+        <category name="ctrlflow-aer-client" />
+    </bundle>
 </site>
