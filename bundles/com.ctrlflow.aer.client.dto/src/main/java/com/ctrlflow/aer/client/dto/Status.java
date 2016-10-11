@@ -6,16 +6,80 @@ import java.util.Arrays;
  * @since 2.0.0
  */
 public class Status {
+
     private static final Status[] EMPTY = new Status[0];
 
     private String pluginId;
+
     private String pluginVersion;
+
     private int code;
+
     private int severity;
+
     private String message;
+
     private String fingerprint;
+
     private Throwable exception;
+
     private Status[] children = EMPTY;
+
+    public String getPluginId() {
+        return pluginId;
+    }
+
+    public void setPluginId(String pluginId) {
+        this.pluginId = pluginId;
+    }
+
+    public String getPluginVersion() {
+        return pluginVersion;
+    }
+
+    public void setPluginVersion(String pluginVersion) {
+        this.pluginVersion = pluginVersion;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public int getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(int severity) {
+        this.severity = severity;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getFingerprint() {
+        return fingerprint;
+    }
+
+    public void setFingerprint(String fingerprint) {
+        this.fingerprint = fingerprint;
+    }
+
+    public Throwable getException() {
+        return exception;
+    }
+
+    public void setException(Throwable exception) {
+        this.exception = exception;
+    }
 
     public Status[] getChildren() {
         return children;
@@ -25,86 +89,22 @@ public class Status {
         return children[index];
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public Throwable getException() {
-        return exception;
-    }
-
-    public String getFingerprint() {
-        return fingerprint;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getPluginId() {
-        return pluginId;
-    }
-
-    public String getPluginVersion() {
-        return pluginVersion;
-    }
-
-    public int getSeverity() {
-        return severity;
-    }
-
     public void setChildren(Status[] children) {
         this.children = children;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public void setException(Throwable exception) {
-        this.exception = exception;
-    }
-
-    public void setFingerprint(String fingerprint) {
-        this.fingerprint = fingerprint;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setPluginId(String pluginId) {
-        this.pluginId = pluginId;
-    }
-
-    public void setPluginVersion(String pluginVersion) {
-        this.pluginVersion = pluginVersion;
-    }
-
-    public void setSeverity(int severity) {
-        this.severity = severity;
-    }
-
-    public boolean hasException() {
-        return exception != null;
-    }
-
-    public boolean hasChildren() {
-        return children != null && children.length > 0;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Arrays.hashCode(children);
-        result = prime * result + code;
-        result = prime * result + (exception == null ? 0 : exception.hashCode());
-        result = prime * result + (fingerprint == null ? 0 : fingerprint.hashCode());
-        result = prime * result + (message == null ? 0 : message.hashCode());
         result = prime * result + (pluginId == null ? 0 : pluginId.hashCode());
         result = prime * result + (pluginVersion == null ? 0 : pluginVersion.hashCode());
+        result = prime * result + code;
         result = prime * result + severity;
+        result = prime * result + (message == null ? 0 : message.hashCode());
+        result = prime * result + (fingerprint == null ? 0 : fingerprint.hashCode());
+        result = prime * result + (exception == null ? 0 : exception.hashCode());
+        result = prime * result + Arrays.hashCode(children);
         return result;
     }
 

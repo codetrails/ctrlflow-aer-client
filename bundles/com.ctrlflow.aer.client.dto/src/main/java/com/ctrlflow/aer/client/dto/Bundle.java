@@ -3,7 +3,6 @@ package com.ctrlflow.aer.client.dto;
 /**
  * @since 2.0.0
  */
-@SuppressWarnings("all")
 public class Bundle {
 
     private String name;
@@ -13,51 +12,30 @@ public class Bundle {
     public Bundle() {
     }
 
-    public Bundle(final String name, final String version) {
+    public Bundle(String name, String version) {
         this.setName(name);
         this.setVersion(version);
     }
 
     @Override
     public String toString() {
-        String _name = this.getName();
-        String _plus = _name + "_";
-        String _version = this.getVersion();
-        return _plus + _version;
-    }
-
-    public boolean hasName() {
-        return this.name != null;
+        return name + "_" + version;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
-    }
-
-    public Bundle withName(final String name) {
-        this.name = name;
-        return this;
-    }
-
-    public boolean hasVersion() {
-        return this.version != null;
     }
 
     public String getVersion() {
         return this.version;
     }
 
-    public void setVersion(final String version) {
+    public void setVersion(String version) {
         this.version = version;
-    }
-
-    public Bundle withVersion(final String version) {
-        this.version = version;
-        return this;
     }
 
     @Override
@@ -97,5 +75,4 @@ public class Bundle {
         }
         return true;
     }
-
 }

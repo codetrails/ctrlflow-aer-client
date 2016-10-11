@@ -8,9 +8,13 @@ import java.util.Arrays;
 public class Throwable {
 
     private static final StackTraceElement[] EMPTY = new StackTraceElement[0];
+
     private String className;
+
     private String message;
+
     private Throwable cause;
+
     private StackTraceElement[] stackTrace = EMPTY;
 
     public Throwable() {
@@ -23,32 +27,32 @@ public class Throwable {
         setCause(cause);
     }
 
-    public Throwable getCause() {
-        return cause;
-    }
-
     public String getClassName() {
         return className;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public StackTraceElement[] getStackTrace() {
-        return stackTrace;
-    }
-
-    public void setCause(Throwable cause) {
-        this.cause = cause;
     }
 
     public void setClassName(String className) {
         this.className = className;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Throwable getCause() {
+        return cause;
+    }
+
+    public void setCause(Throwable cause) {
+        this.cause = cause;
+    }
+
+    public StackTraceElement[] getStackTrace() {
+        return stackTrace;
     }
 
     public void setStackTrace(StackTraceElement[] stackTrace) {
@@ -59,9 +63,9 @@ public class Throwable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (cause == null ? 0 : cause.hashCode());
         result = prime * result + (className == null ? 0 : className.hashCode());
         result = prime * result + (message == null ? 0 : message.hashCode());
+        result = prime * result + (cause == null ? 0 : cause.hashCode());
         result = prime * result + Arrays.hashCode(stackTrace);
         return result;
     }
@@ -78,13 +82,6 @@ public class Throwable {
             return false;
         }
         Throwable other = (Throwable) obj;
-        if (cause == null) {
-            if (other.cause != null) {
-                return false;
-            }
-        } else if (!cause.equals(other.cause)) {
-            return false;
-        }
         if (className == null) {
             if (other.className != null) {
                 return false;
@@ -97,6 +94,13 @@ public class Throwable {
                 return false;
             }
         } else if (!message.equals(other.message)) {
+            return false;
+        }
+        if (cause == null) {
+            if (other.cause != null) {
+                return false;
+            }
+        } else if (!cause.equals(other.cause)) {
             return false;
         }
         if (!Arrays.equals(stackTrace, other.stackTrace)) {
@@ -118,5 +122,4 @@ public class Throwable {
         }
         return sb.toString();
     }
-
 }

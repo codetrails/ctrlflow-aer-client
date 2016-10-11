@@ -2,7 +2,6 @@ package com.ctrlflow.aer.client.dto;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +11,9 @@ import java.util.UUID;
 /**
  * @since 2.0.0
  */
-@SuppressWarnings("all")
 public class Incident {
-    private String id;
 
-    private String token;
+    private String id;
 
     private UUID anonymousId;
 
@@ -55,263 +52,124 @@ public class Incident {
      */
     private Map<String, String> auxiliaryInformation;
 
-    public boolean hasId() {
-        return this.id != null;
-    }
-
     public String getId() {
         return this.id;
     }
 
-    public void setId(final String id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public Incident withId(final String id) {
-        this.id = id;
-        return this;
-    }
-
-    public boolean hasAnonymousId() {
-        return this.anonymousId != null;
     }
 
     public UUID getAnonymousId() {
         return this.anonymousId;
     }
 
-    public void setAnonymousId(final UUID anonymousId) {
+    public void setAnonymousId(UUID anonymousId) {
         this.anonymousId = anonymousId;
-    }
-
-    public Incident withAnonymousId(final UUID anonymousId) {
-        this.anonymousId = anonymousId;
-        return this;
-    }
-
-    public boolean hasName() {
-        return this.name != null;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
-    }
-
-    public Incident withName(final String name) {
-        this.name = name;
-        return this;
-    }
-
-    public boolean hasEmail() {
-        return this.email != null;
     }
 
     public String getEmail() {
         return this.email;
     }
 
-    public void setEmail(final String email) {
+    public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Incident withEmail(final String email) {
-        this.email = email;
-        return this;
-    }
-
-    public boolean hasComment() {
-        return this.comment != null;
     }
 
     public String getComment() {
         return this.comment;
     }
 
-    public void setComment(final String comment) {
+    public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public Incident withComment(final String comment) {
-        this.comment = comment;
-        return this;
-    }
-
-    public boolean hasFingerprint() {
-        return this.fingerprint != null;
     }
 
     public String getFingerprint() {
         return this.fingerprint;
     }
 
-    public void setFingerprint(final String fingerprint) {
+    public void setFingerprint(String fingerprint) {
         this.fingerprint = fingerprint;
-    }
-
-    public Incident withFingerprint(final String fingerprint) {
-        this.fingerprint = fingerprint;
-        return this;
-    }
-
-    public boolean hasEclipseBuildId() {
-        return this.eclipseBuildId != null;
     }
 
     public String getEclipseBuildId() {
         return this.eclipseBuildId;
     }
 
-    public void setEclipseBuildId(final String eclipseBuildId) {
+    public void setEclipseBuildId(String eclipseBuildId) {
         this.eclipseBuildId = eclipseBuildId;
-    }
-
-    public Incident withEclipseBuildId(final String eclipseBuildId) {
-        this.eclipseBuildId = eclipseBuildId;
-        return this;
-    }
-
-    public boolean hasEclipseProduct() {
-        return this.eclipseProduct != null;
     }
 
     public String getEclipseProduct() {
         return this.eclipseProduct;
     }
 
-    public void setEclipseProduct(final String eclipseProduct) {
+    public void setEclipseProduct(String eclipseProduct) {
         this.eclipseProduct = eclipseProduct;
-    }
-
-    public Incident withEclipseProduct(final String eclipseProduct) {
-        this.eclipseProduct = eclipseProduct;
-        return this;
-    }
-
-    public boolean hasJavaRuntimeVersion() {
-        return this.javaRuntimeVersion != null;
     }
 
     public String getJavaRuntimeVersion() {
         return this.javaRuntimeVersion;
     }
 
-    public void setJavaRuntimeVersion(final String javaRuntimeVersion) {
+    public void setJavaRuntimeVersion(String javaRuntimeVersion) {
         this.javaRuntimeVersion = javaRuntimeVersion;
-    }
-
-    public Incident withJavaRuntimeVersion(final String javaRuntimeVersion) {
-        this.javaRuntimeVersion = javaRuntimeVersion;
-        return this;
-    }
-
-    public boolean hasOsgiArch() {
-        return this.osgiArch != null;
     }
 
     public String getOsgiArch() {
         return this.osgiArch;
     }
 
-    public void setOsgiArch(final String osgiArch) {
+    public void setOsgiArch(String osgiArch) {
         this.osgiArch = osgiArch;
-    }
-
-    public Incident withOsgiArch(final String osgiArch) {
-        this.osgiArch = osgiArch;
-        return this;
-    }
-
-    public boolean hasOsgiOs() {
-        return this.osgiOs != null;
     }
 
     public String getOsgiOs() {
         return this.osgiOs;
     }
 
-    public void setOsgiOs(final String osgiOs) {
+    public void setOsgiOs(String osgiOs) {
         this.osgiOs = osgiOs;
-    }
-
-    public Incident withOsgiOs(final String osgiOs) {
-        this.osgiOs = osgiOs;
-        return this;
-    }
-
-    public boolean hasOsgiOsVersion() {
-        return this.osgiOsVersion != null;
     }
 
     public String getOsgiOsVersion() {
         return this.osgiOsVersion;
     }
 
-    public void setOsgiOsVersion(final String osgiOsVersion) {
+    public void setOsgiOsVersion(String osgiOsVersion) {
         this.osgiOsVersion = osgiOsVersion;
-    }
-
-    public Incident withOsgiOsVersion(final String osgiOsVersion) {
-        this.osgiOsVersion = osgiOsVersion;
-        return this;
-    }
-
-    public boolean hasOsgiWs() {
-        return this.osgiWs != null;
     }
 
     public String getOsgiWs() {
         return this.osgiWs;
     }
 
-    public void setOsgiWs(final String osgiWs) {
+    public void setOsgiWs(String osgiWs) {
         this.osgiWs = osgiWs;
-    }
-
-    public Incident withOsgiWs(final String osgiWs) {
-        this.osgiWs = osgiWs;
-        return this;
-    }
-
-    public boolean hasPresentBundles() {
-        return this.presentBundles != null;
     }
 
     public List<Bundle> getPresentBundles() {
         return this.presentBundles;
     }
 
-    public void setPresentBundles(final List<Bundle> presentBundles) {
+    public void setPresentBundles(List<Bundle> presentBundles) {
         this.presentBundles = presentBundles;
-    }
-
-    public Incident withPresentBundles(final List<Bundle> presentBundles) {
-        this.presentBundles = presentBundles;
-        return this;
-    }
-
-    public boolean hasStatus() {
-        return this.status != null;
     }
 
     public Status getStatus() {
         return this.status;
     }
 
-    public void setStatus(final Status status) {
+    public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public Incident withStatus(final Status status) {
-        this.status = status;
-        return this;
-    }
-
-    public boolean hasBugId() {
-        return true;
     }
 
     /**
@@ -326,21 +184,6 @@ public class Incident {
      */
     public void setAuxiliaryInformation(Map<String, String> auxiliaryInformation) {
         this.auxiliaryInformation = auxiliaryInformation;
-    }
-
-    /**
-     * @since 2.0.1
-     */
-    public Incident withAuxiliaryInformation(final Map<String, String> auxiliaryInformation) {
-        this.auxiliaryInformation = auxiliaryInformation;
-        return this;
-    }
-
-    /**
-     * @since 2.0.1
-     */
-    public boolean hasAuxiliaryInformation() {
-        return auxiliaryInformation != null && !auxiliaryInformation.isEmpty();
     }
 
     @Override
@@ -364,7 +207,7 @@ public class Incident {
         result = prime * result + (presentBundles == null ? 0 : presentBundles.hashCode());
         result = prime * result + (problemIds == null ? 0 : problemIds.hashCode());
         result = prime * result + (status == null ? 0 : status.hashCode());
-        result = prime * result + (token == null ? 0 : token.hashCode());
+        result = prime * result + (auxiliaryInformation == null ? 0 : auxiliaryInformation.hashCode());
         return result;
     }
 
@@ -495,11 +338,11 @@ public class Incident {
         } else if (!status.equals(other.status)) {
             return false;
         }
-        if (token == null) {
-            if (other.token != null) {
+        if (auxiliaryInformation == null) {
+            if (other.auxiliaryInformation != null) {
                 return false;
             }
-        } else if (!token.equals(other.token)) {
+        } else if (!auxiliaryInformation.equals(other.auxiliaryInformation)) {
             return false;
         }
         return true;
