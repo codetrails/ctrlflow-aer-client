@@ -31,8 +31,6 @@ public class Incident {
 
     private String javaRuntimeVersion;
 
-    private boolean logMessage;
-
     private String osgiArch;
 
     private String osgiOs;
@@ -44,8 +42,6 @@ public class Incident {
     private List<Bundle> presentBundles = new ArrayList<>();
 
     private Status status;
-
-    private Set<String> problemIds = new HashSet<>();
 
     /**
      * @since 2.0.1
@@ -198,14 +194,12 @@ public class Incident {
         result = prime * result + (fingerprint == null ? 0 : fingerprint.hashCode());
         result = prime * result + (id == null ? 0 : id.hashCode());
         result = prime * result + (javaRuntimeVersion == null ? 0 : javaRuntimeVersion.hashCode());
-        result = prime * result + (logMessage ? 1231 : 1237);
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (osgiArch == null ? 0 : osgiArch.hashCode());
         result = prime * result + (osgiOs == null ? 0 : osgiOs.hashCode());
         result = prime * result + (osgiOsVersion == null ? 0 : osgiOsVersion.hashCode());
         result = prime * result + (osgiWs == null ? 0 : osgiWs.hashCode());
         result = prime * result + (presentBundles == null ? 0 : presentBundles.hashCode());
-        result = prime * result + (problemIds == null ? 0 : problemIds.hashCode());
         result = prime * result + (status == null ? 0 : status.hashCode());
         result = prime * result + (auxiliaryInformation == null ? 0 : auxiliaryInformation.hashCode());
         return result;
@@ -279,9 +273,6 @@ public class Incident {
         } else if (!javaRuntimeVersion.equals(other.javaRuntimeVersion)) {
             return false;
         }
-        if (logMessage != other.logMessage) {
-            return false;
-        }
         if (name == null) {
             if (other.name != null) {
                 return false;
@@ -322,13 +313,6 @@ public class Incident {
                 return false;
             }
         } else if (!presentBundles.equals(other.presentBundles)) {
-            return false;
-        }
-        if (problemIds == null) {
-            if (other.problemIds != null) {
-                return false;
-            }
-        } else if (!problemIds.equals(other.problemIds)) {
             return false;
         }
         if (status == null) {
