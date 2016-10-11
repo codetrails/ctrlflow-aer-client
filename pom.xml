@@ -24,14 +24,20 @@
 
     <developers>
         <developer>
-            <name>Marcel Bruch</name>
-            <email>marcel.bruch@codetrails.com</email>
+            <name>Andreas Sewe</name>
+            <email>andreas.sewe@codetrails.com</email>
             <organization>Codetrails GmbH</organization>
             <organizationUrl>http://www.codetrails.com/</organizationUrl>
         </developer>
         <developer>
-            <name>Andreas Sewe</name>
-            <email>andreas.sewe@codetrails.com</email>
+            <name>Johannes Dorn</name>
+            <email>johannes.dorn@codetrails.com</email>
+            <organization>Codetrails GmbH</organization>
+            <organizationUrl>http://www.codetrails.com/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Marcel Bruch</name>
+            <email>marcel.bruch@codetrails.com</email>
             <organization>Codetrails GmbH</organization>
             <organizationUrl>http://www.codetrails.com/</organizationUrl>
         </developer>
