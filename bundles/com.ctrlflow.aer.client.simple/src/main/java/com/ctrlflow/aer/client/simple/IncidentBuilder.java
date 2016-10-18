@@ -33,7 +33,7 @@ public class IncidentBuilder {
 
     private String eclipseProduct;
 
-    private String eclipseBuildId;
+    private String productVersion;
 
     private String osgiArch;
 
@@ -107,13 +107,35 @@ public class IncidentBuilder {
         return this;
     }
 
+    /**
+     * @deprecated Use {@link #withProductId(String)} instead
+     */
+    @Deprecated
     public IncidentBuilder withEclipseProduct(String eclipseProduct) {
+        return withProductId(eclipseProduct);
+    }
+
+    /**
+     * @since 2.0.2
+     */
+    public IncidentBuilder withProductId(String eclipseProduct) {
         this.eclipseProduct = eclipseProduct;
         return this;
     }
 
+    /**
+     * @deprecated Use {@link #withProductVersion(String)} instead
+     */
+    @Deprecated
     public IncidentBuilder withEclipseBuildId(String eclipseBuildId) {
-        this.eclipseBuildId = eclipseBuildId;
+        return withProductVersion(eclipseBuildId);
+    }
+
+    /**
+     * @since 2.0.2
+     */
+    public IncidentBuilder withProductVersion(String productVersion) {
+        this.productVersion = productVersion;
         return this;
     }
 
@@ -171,8 +193,8 @@ public class IncidentBuilder {
         incident.setEmail(userEmail);
         incident.setComment(comment);
 
-        incident.setEclipseProduct(eclipseProduct);
-        incident.setEclipseBuildId(eclipseBuildId);
+        incident.setProductId(eclipseProduct);
+        incident.setProductionVersion(productVersion);
 
         incident.setOsgiArch(osgiArch);
         incident.setOsgiOs(osgiOs);

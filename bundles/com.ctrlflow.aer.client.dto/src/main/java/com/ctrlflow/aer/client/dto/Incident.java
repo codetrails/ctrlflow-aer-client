@@ -25,9 +25,9 @@ public class Incident {
 
     private String fingerprint;
 
-    private String eclipseBuildId;
-
     private String eclipseProduct;
+
+    private String eclipseBuildId;
 
     private String javaRuntimeVersion;
 
@@ -96,20 +96,64 @@ public class Incident {
         this.fingerprint = fingerprint;
     }
 
-    public String getEclipseBuildId() {
-        return this.eclipseBuildId;
-    }
-
-    public void setEclipseBuildId(String eclipseBuildId) {
-        this.eclipseBuildId = eclipseBuildId;
-    }
-
+    /**
+     * @deprecated Use {@link #getProductId()} instead
+     */
+    @Deprecated
     public String getEclipseProduct() {
+        return getProductId();
+    }
+
+    /**
+     * @since 2.0.2
+     */
+    public String getProductId() {
         return this.eclipseProduct;
     }
 
+    /**
+     * @deprecated Use {@link #setProductId(String)} instead
+     */
+    @Deprecated
     public void setEclipseProduct(String eclipseProduct) {
-        this.eclipseProduct = eclipseProduct;
+        setProductId(eclipseProduct);
+    }
+
+    /**
+     * @since 2.0.2
+     */
+    public void setProductId(String productId) {
+        this.eclipseProduct = productId;
+    }
+
+    /**
+     * @deprecated Use {@link #getProductVersion()} instead
+     */
+    @Deprecated
+    public String getEclipseBuildId() {
+        return getProductVersion();
+    }
+
+    /**
+     * @since 2.0.2
+     */
+    public String getProductVersion() {
+        return this.eclipseBuildId;
+    }
+
+    /**
+     * @deprecated Use {@link #setProductionVersion(String)} instead
+     */
+    @Deprecated
+    public void setEclipseBuildId(String eclipseBuildId) {
+        setProductionVersion(eclipseBuildId);
+    }
+
+    /**
+     * @since 2.0.2
+     */
+    public void setProductionVersion(String productVersion) {
+        this.eclipseBuildId = productVersion;
     }
 
     public String getJavaRuntimeVersion() {

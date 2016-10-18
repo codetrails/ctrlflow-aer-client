@@ -65,7 +65,7 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
     private Queue<Incident> history = EvictingQueue.create(50);
 
     private String productId = "undefined";
-    private String buildId = "undefined";
+    private String productVersion = "undefined";
     private String userName = getSystemProperty("user.name");
     private String email = userName + "@localhost";
 
@@ -138,7 +138,7 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
 
         builder.withAnonymousId(HOST_ID).withUserName(userName).withUserEmail(email);
 
-        builder.withEclipseProduct(productId).withEclipseBuildId(buildId);
+        builder.withProductId(productId).withProductVersion(productVersion);
 
         builder.withOsgiArch(osgiArch).withOsgiOs(osgiOs).withOsgiOsVersion(osgiOsVersion).withOsgiWs("");
 
@@ -242,12 +242,34 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         this.productId = productId;
     }
 
+    /**
+     * @deprecated Use {@link #getProductVersion()} instead
+     */
+    @Deprecated
     public String getBuildId() {
-        return buildId;
+        return getProductVersion();
     }
 
+    /**
+     * @since 2.0.2
+     */
+    public String getProductVersion() {
+        return productVersion;
+    }
+
+    /**
+     * @deprecated Use {@link #setProductVersion(String)} instead
+     */
+    @Deprecated
     public void setBuildId(String buildId) {
-        this.buildId = buildId;
+        setProductVersion(buildId);
+    }
+
+    /**
+     * @since 2.0.2
+     */
+    public void setProductVersion(String productVersion) {
+        this.productVersion = productVersion;
     }
 
     public String getUserName() {

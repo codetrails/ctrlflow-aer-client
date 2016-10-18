@@ -140,13 +140,13 @@ public class AerAppenderTest {
 
     @Test
     public void testProductIdAndVersionSetAsEclipseProductAndVersion() {
-        sut.setProductId("theEclipseProductId");
-        sut.setBuildId("theEclipseBuildId");
+        sut.setProductId("org.example");
+        sut.setProductVersion("1.0.0");
         log.error("Error", new RuntimeException());
         verify(sut).sendIncident(captor.capture());
         Incident incident = captor.getValue();
-        assertThat(incident.getEclipseProduct(), is("theEclipseProductId"));
-        assertThat(incident.getEclipseBuildId(), is("theEclipseBuildId"));
+        assertThat(incident.getProductId(), is("org.example"));
+        assertThat(incident.getProductVersion(), is("1.0.0"));
     }
 
     @After
