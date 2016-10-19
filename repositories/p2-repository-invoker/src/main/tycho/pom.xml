@@ -66,6 +66,7 @@
                                 <arch>all</arch>
                             </environment>
                         </environments>
+                        <includePackedArtifacts>true</includePackedArtifacts>
                     </configuration>
                 </plugin>
                 <plugin>
