@@ -39,6 +39,10 @@
             <groupId>com.ctrlflow.aer.client.bundles</groupId>
             <artifactId>com.ctrlflow.aer.client.logback</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ctrlflow.aer.client.bundles</groupId>
+            <artifactId>com.ctrlflow.aer.client.simple</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -26,7 +26,7 @@
     <properties>
         <httpClientVersion>4.3.6</httpClientVersion>
         <httpCoreVersion>4.3.3</httpCoreVersion>
-        <logbackVersion>1.1.2</logbackVersion>
+        <logbackVersion>1.0.7</logbackVersion>
     </properties>
 
     <dependencies>
