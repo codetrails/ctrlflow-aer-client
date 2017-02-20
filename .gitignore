@@ -5,3 +5,6 @@ target/
 .classpath
 .project
 .settings/
+
+# Ignore unwanted OS-specific files
+.DS_Store
