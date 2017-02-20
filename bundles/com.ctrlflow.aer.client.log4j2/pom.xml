@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ctrlflow.aer.client.bundles</groupId>
+        <artifactId>bundles</artifactId>
+        <version>2.0.2-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <artifactId>com.ctrlflow.aer.client.log4j2</artifactId>
+    <packaging>bundle</packaging>
+
+    <name>Ctrlflow Automated Error Reporting Log4j 2 Client</name>
+    <description>Ctrlflow Automated Error Reporting client implementation based on the Apache Log4j 2 logging framework.</description>
+    <url>https://www.ctrlflow.com/automated-error-reporting/</url>
+
+    <scm>
+        <connection>scm:git:https://github.com/codetrails/ctrlflow-aer-client.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/codetrails/ctrlflow-aer-client.git</developerConnection>
+        <url>https://github.com/codetrails/ctrlflow-aer-client/tree/master/bundles/com.ctrlflow.aer.client.log4j2</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+        <httpClientVersion>4.3.6</httpClientVersion>
+        <httpCoreVersion>4.3.3</httpCoreVersion>
+        <log4jVersion>2.8</log4jVersion>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>${log4jVersion}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <!-- Compile scope -->
+        <dependency>
+            <groupId>com.ctrlflow.aer.client.bundles</groupId>
+            <artifactId>com.ctrlflow.aer.client.dto</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ctrlflow.aer.client.bundles</groupId>
+            <artifactId>com.ctrlflow.aer.client.simple</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <configuration>
+                        <instructions>
+                            <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
+                            <Fragment-Host>org.apache.logging.log4j.core</Fragment-Host>
+                            <Include-Resource>
+                                {maven-resources},
+                                META-INF/org/apache/logging/log4j/core/config/plugins/=${project.build.outputDirectory}/META-INF/org/apache/logging/log4j/core/config/plugins/
+                            </Include-Resource>
+                        </instructions>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>log4j-plugin-processor</id>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                            <phase>process-classes</phase>
+                            <configuration>
+                                <proc>only</proc>
+                                <annotationProcessors>
+                                    <annotationProcessor>org.apache.logging.log4j.core.config.plugins.processor.PluginProcessor</annotationProcessor>
+                                </annotationProcessors>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

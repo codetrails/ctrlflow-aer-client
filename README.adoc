@@ -5,8 +5,13 @@ The https://www.ctrlflow.com/automated-error-reporting/[Ctrlflow Automated Error
 
 At the moment, the following clients are available:
 
+Ctrlflow AER Log4j 2 Client::
+If you are developing a *Java application* that uses the popular https://logging.apache.org/log4j/2.x/[*Log4j 2*] logging framework, you can configure it to use the Ctrlflow AER Log4j 2 Client to send any logged errors to your server.
++
+*Examples* on how to use this client are maintained in a https://github.com/codetrails/ctrlflow-aer-client-examples[separate project].
+
 Ctrlflow AER Logback Client::
-If you are developing a *Java application* that uses the popular http://logback.qos.ch/[*Logback*] logging framework, you can configure Logback to use the Ctrlflow AER Logback Client to send any logged errors to your server.
+If you are developing a *Java application* that uses the popular http://logback.qos.ch/[*Logback*] logging framework, you can configure it to use the Ctrlflow AER Logback Client to send any logged errors to your server.
 +
 *Examples* on how to use this client are maintained in a https://github.com/codetrails/ctrlflow-aer-client-examples[separate project].
 

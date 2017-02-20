@@ -12,12 +12,9 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.UUID;
 
-import org.apache.http.client.HttpResponseException;
-
 import com.ctrlflow.aer.client.dto.Bundle;
 import com.ctrlflow.aer.client.dto.Incident;
 import com.ctrlflow.aer.client.dto.StackTraceElement;
-import com.ctrlflow.aer.client.dto.Status;
 import com.ctrlflow.aer.client.dto.Throwable;
 import com.ctrlflow.aer.client.simple.IncidentBuilder;
 import com.ctrlflow.aer.client.simple.SimpleAerClient;
@@ -37,7 +34,7 @@ import ch.qos.logback.core.AppenderBase;
 import ch.qos.logback.core.status.WarnStatus;
 
 /**
- * Appender which creates incidents for log events and sends them to a given url. It is recommended to attach the appender to an
+ * Appender which creates incidents for log events and sends them to a given URL. It is recommended to attach the appender to an
  * {@link AsyncAppender}. If {@link LoggerContext#setPackagingDataEnabled(boolean)} is set to true, the appender will collect the
  * {@link ClassPackagingData} and include them as {@link Bundle} in the incident. In addition,
  * {@link LoggerContext#setMaxCallerDataDepth(int)} should be set to a value high enough to get the full stacktrace of a logging
@@ -46,6 +43,8 @@ import ch.qos.logback.core.status.WarnStatus;
  * @since 2.0.0
  */
 public class AerAppender extends AppenderBase<ILoggingEvent> {
+
+    private static final int DEFAULT_HISTORY_SIZE = 50;
 
     private static final UUID HOST_ID = computeHostId();
 
@@ -61,8 +60,8 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
     }
 
     private String url;
-    private int historySize = 50;
-    private Queue<Incident> history = EvictingQueue.create(50);
+    private int historySize = DEFAULT_HISTORY_SIZE;
+    private Queue<Incident> history = EvictingQueue.create(historySize);
 
     private String productId = "undefined";
     private String productVersion = "undefined";
@@ -85,14 +84,6 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         }
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     @Override
     protected void append(ILoggingEvent event) {
         Incident incident = createIncident(event);
@@ -106,7 +97,7 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         event.prepareForDeferredProcessing();
 
         IThrowableProxy throwableProxy = event.getThrowableProxy();
-        // if proxy is null, no exception was logged. add a synthetic one with the caller data and calculate the
+        // If proxy is null, no exception was logged. add a synthetic one with the caller data and calculate the
         // packagingData
         if (throwableProxy == null) {
             java.lang.Throwable t = new NoStackTrace();
@@ -151,40 +142,6 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         return builder.build();
     }
 
-    @VisibleForTesting
-    protected Bundle toBundle(ClassPackagingData classPackagingData) {
-        Bundle bundle = new Bundle();
-        String codeLocation = classPackagingData.getCodeLocation();
-        // remove any file extension
-        int indexOfLastDot = codeLocation.lastIndexOf(".");
-        if (indexOfLastDot != -1) {
-            codeLocation = codeLocation.substring(0, indexOfLastDot);
-        }
-        String version = classPackagingData.getVersion();
-        // assuming codelocation = name-version.jar
-        int indexOfVersion = codeLocation.lastIndexOf("-" + version);
-        if (indexOfVersion != -1) {
-            codeLocation = codeLocation.substring(0, indexOfVersion);
-        }
-        bundle.setName(codeLocation);
-        bundle.setVersion(version);
-        return bundle;
-    }
-
-    private LinkedHashSet<ClassPackagingData> collectPackagingData(IThrowableProxy throwableProxy) {
-        LinkedHashSet<ClassPackagingData> classPackagingData = new LinkedHashSet<>();
-        for (StackTraceElementProxy proxy : throwableProxy.getStackTraceElementProxyArray()) {
-            ClassPackagingData data = proxy.getClassPackagingData();
-            if (data != null) {
-                classPackagingData.add(data);
-            }
-        }
-        if (throwableProxy.getCause() != null) {
-            classPackagingData.addAll(collectPackagingData(throwableProxy.getCause()));
-        }
-        return classPackagingData;
-    }
-
     private static Throwable convert(IThrowableProxy proxy) {
         Throwable t = new Throwable();
         t.setClassName(proxy.getClassName());
@@ -214,6 +171,40 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
         return st;
     }
 
+    private LinkedHashSet<ClassPackagingData> collectPackagingData(IThrowableProxy throwableProxy) {
+        LinkedHashSet<ClassPackagingData> classPackagingData = new LinkedHashSet<>();
+        for (StackTraceElementProxy proxy : throwableProxy.getStackTraceElementProxyArray()) {
+            ClassPackagingData data = proxy.getClassPackagingData();
+            if (data != null) {
+                classPackagingData.add(data);
+            }
+        }
+        if (throwableProxy.getCause() != null) {
+            classPackagingData.addAll(collectPackagingData(throwableProxy.getCause()));
+        }
+        return classPackagingData;
+    }
+
+    @VisibleForTesting
+    protected Bundle toBundle(ClassPackagingData classPackagingData) {
+        Bundle bundle = new Bundle();
+        String codeLocation = classPackagingData.getCodeLocation();
+        // remove any file extension
+        int indexOfLastDot = codeLocation.lastIndexOf(".");
+        if (indexOfLastDot != -1) {
+            codeLocation = codeLocation.substring(0, indexOfLastDot);
+        }
+        String version = classPackagingData.getVersion();
+        // assuming codelocation = name-version.jar
+        int indexOfVersion = codeLocation.lastIndexOf("-" + version);
+        if (indexOfVersion != -1) {
+            codeLocation = codeLocation.substring(0, indexOfVersion);
+        }
+        bundle.setName(codeLocation);
+        bundle.setVersion(version);
+        return bundle;
+    }
+
     @VisibleForTesting
     void sendIncident(Incident i) {
         try {
@@ -222,6 +213,14 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
             addStatus(
                     new WarnStatus(String.format("Failed to send incident '%s'", i.getStatus().getMessage()), this, e));
         }
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public int getHistorySize() {

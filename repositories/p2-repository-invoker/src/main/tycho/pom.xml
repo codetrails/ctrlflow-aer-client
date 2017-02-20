@@ -24,6 +24,11 @@
 
     <repositories>
         <repository>
+            <id>eclipse-neon</id>
+            <layout>p2</layout>
+            <url>http://download.eclipse.org/releases/neon/</url>
+        </repository>
+        <repository>
             <id>orbit-neon-r</id>
             <layout>p2</layout>
             <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/</url>
@@ -34,6 +39,10 @@
         <dependency>
             <groupId>com.ctrlflow.aer.client.bundles</groupId>
             <artifactId>com.ctrlflow.aer.client.dto</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ctrlflow.aer.client.bundles</groupId>
+            <artifactId>com.ctrlflow.aer.client.log4j2</artifactId>
         </dependency>
         <dependency>
             <groupId>com.ctrlflow.aer.client.bundles</groupId>
