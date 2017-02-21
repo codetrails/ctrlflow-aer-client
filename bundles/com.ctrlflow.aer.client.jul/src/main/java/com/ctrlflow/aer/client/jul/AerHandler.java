@@ -10,6 +10,9 @@ import java.util.MissingResourceException;
 import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.ErrorManager;
 import java.util.logging.Filter;
 import java.util.logging.Handler;
@@ -46,6 +49,9 @@ public class AerHandler extends Handler {
         }
     }
 
+    private AsyncThread asyncThread;
+    private boolean asyncNeverBlock;
+
     private String url;
     private int historySize;
     private Queue<Incident> history;
@@ -75,6 +81,73 @@ public class AerHandler extends Handler {
         configure();
     }
 
+    private class AsyncThread extends Thread {
+
+        private final BlockingQueue<LogRecord> asyncQueue;
+        private final LogRecord shutdownRecord = new LogRecord(Level.ALL, "Shutdown AsyncThread");
+
+        private final boolean fullyFlush;
+
+        private volatile boolean earlyShutdown = false;
+
+        public AsyncThread(int queueSize, boolean fullyFlush) {
+            asyncQueue = new ArrayBlockingQueue<>(queueSize);
+            this.fullyFlush = fullyFlush;
+            setDaemon(true);
+        }
+
+        @Override
+        public void run() {
+            while (!earlyShutdown) {
+                try {
+                    LogRecord record = asyncQueue.take();
+                    if (record == shutdownRecord) {
+                        return;
+                    }
+                    publishInternal(record);
+                } catch (InterruptedException e) {
+                    reportError(null, e, ErrorManager.GENERIC_FAILURE);
+                    return;
+                }
+            }
+        }
+
+        /**
+         * To be called from other threads.
+         */
+        private void enqueue(LogRecord record, boolean neverBlock) {
+            try {
+                if (neverBlock) {
+                    asyncQueue.offer(record);
+                } else {
+                    asyncQueue.put(record);
+                }
+            } catch (InterruptedException e) {
+                reportError(null, e, ErrorManager.GENERIC_FAILURE);
+            }
+        }
+
+        /**
+         * To be called from other threads.
+         */
+        private void shutdown() {
+            try {
+                if (fullyFlush) {
+                    asyncQueue.put(shutdownRecord);
+                } else {
+                    asyncQueue.offer(shutdownRecord);
+                }
+                if (fullyFlush) {
+                    this.join();
+                } else {
+                    this.join(TimeUnit.SECONDS.toMillis(1));
+                }
+            } catch (InterruptedException e) {
+                reportError(null, e, ErrorManager.GENERIC_FAILURE);
+            }
+        }
+    }
+
     private void configure() {
         LogManager manager = LogManager.getLogManager();
         String cname = getClass().getName();
@@ -102,6 +175,16 @@ public class AerHandler extends Handler {
                 }
             }
         }
+
+        boolean asynchronous = getBooleanProperty(manager, cname + ".asynchronous", false);
+        int queueSize = getIntProperty(manager, cname + ".asyncQueueSize", 50);
+        boolean fullyFlush = getBooleanProperty(manager, cname + ".asyncFullyFlush", false);
+        if (asynchronous) {
+            asyncThread = new AsyncThread(queueSize, fullyFlush);
+            asyncThread.start();
+        }
+
+        this.asyncNeverBlock = getBooleanProperty(manager, cname + ".asyncNeverBlock", false);
     }
 
     private Level getLevelProperty(LogManager manager, String property, Level defaultValue) {
@@ -150,12 +233,28 @@ public class AerHandler extends Handler {
         }
     }
 
+    private boolean getBooleanProperty(LogManager manager, String property, boolean defaultValue) {
+        String rawValue = manager.getProperty(property);
+        if (rawValue == null) {
+            return defaultValue;
+        }
+        return Boolean.parseBoolean(rawValue.trim());
+    }
+
     @Override
     public void publish(LogRecord record) {
         if (!isLoggable(record)) {
             return;
         }
 
+        if (asyncThread != null) {
+            asyncThread.enqueue(record, asyncNeverBlock);
+        } else {
+            publishInternal(record);
+        }
+    }
+
+    private void publishInternal(LogRecord record) {
         Incident incident = createIncident(record);
         if (!history.contains(incident)) {
             history.add(incident);
@@ -216,6 +315,13 @@ public class AerHandler extends Handler {
 
     @Override
     public void close() throws SecurityException {
+        if (asyncThread != null) {
+            asyncThread.shutdown();
+        }
+    }
+
+    public boolean isAsynchronous() {
+        return asyncThread != null;
     }
 
     public String getUrl() {
