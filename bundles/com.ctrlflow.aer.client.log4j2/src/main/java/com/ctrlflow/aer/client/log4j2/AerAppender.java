@@ -210,11 +210,11 @@ public class AerAppender extends AbstractAppender {
         return bundle;
     }
 
-    private void sendIncident(Incident i) {
+    private void sendIncident(Incident incident) {
         try {
-            SimpleAerClient.send(i, url);
+            SimpleAerClient.send(incident, url);
         } catch (IOException e) {
-            super.error(String.format("Failed to send incident '%s'", i.getStatus().getMessage()), e);
+            super.error(String.format("Failed to send incident '%s'", incident.getStatus().getMessage()), e);
         }
     }
 
@@ -233,7 +233,6 @@ public class AerAppender extends AbstractAppender {
     public void setHistorySize(int historySize) {
         this.historySize = historySize;
         this.history = EvictingQueue.create(historySize);
-
     }
 
     public String getProductId() {

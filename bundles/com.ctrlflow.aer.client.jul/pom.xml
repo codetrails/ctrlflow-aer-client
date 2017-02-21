@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ctrlflow.aer.client.bundles</groupId>
+        <artifactId>bundles</artifactId>
+        <version>2.0.2-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <artifactId>com.ctrlflow.aer.client.jul</artifactId>
+    <packaging>bundle</packaging>
+
+    <name>Ctrlflow Automated Error Reporting java.util.logging Client</name>
+    <description>Ctrlflow Automated Error Reporting client implementation based on the java.util.logging framework.</description>
+    <url>https://www.ctrlflow.com/automated-error-reporting/</url>
+    <inceptionYear>2017</inceptionYear>
+
+    <scm>
+        <connection>scm:git:https://github.com/codetrails/ctrlflow-aer-client.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/codetrails/ctrlflow-aer-client.git</developerConnection>
+        <url>https://github.com/codetrails/ctrlflow-aer-client/tree/master/bundles/com.ctrlflow.aer.client.jul</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+        <httpClientVersion>4.3.6</httpClientVersion>
+        <httpCoreVersion>4.3.3</httpCoreVersion>
+    </properties>
+
+    <dependencies>
+        <!-- Compile scope -->
+        <dependency>
+            <groupId>com.ctrlflow.aer.client.bundles</groupId>
+            <artifactId>com.ctrlflow.aer.client.dto</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ctrlflow.aer.client.bundles</groupId>
+            <artifactId>com.ctrlflow.aer.client.simple</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <configuration>
+                        <instructions>
+                            <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
+                        </instructions>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

@@ -4,6 +4,9 @@
     <bundle id="com.ctrlflow.aer.client.dto">
         <category name="ctrlflow-aer-client" />
     </bundle>
+    <bundle id="com.ctrlflow.aer.client.jul">
+        <category name="ctrlflow-aer-client" />
+    </bundle>
     <bundle id="com.ctrlflow.aer.client.log4j2">
         <category name="ctrlflow-aer-client" />
     </bundle>

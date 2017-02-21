@@ -19,6 +19,7 @@
 
     <modules>
         <module>com.ctrlflow.aer.client.dto</module>
+        <module>com.ctrlflow.aer.client.jul</module>
         <module>com.ctrlflow.aer.client.log4j2</module>
         <module>com.ctrlflow.aer.client.logback</module>
         <module>com.ctrlflow.aer.client.simple</module>

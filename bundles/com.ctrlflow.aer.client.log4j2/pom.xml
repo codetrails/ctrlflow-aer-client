@@ -15,6 +15,7 @@
     <name>Ctrlflow Automated Error Reporting Log4j 2 Client</name>
     <description>Ctrlflow Automated Error Reporting client implementation based on the Apache Log4j 2 logging framework.</description>
     <url>https://www.ctrlflow.com/automated-error-reporting/</url>
+    <inceptionYear>2017</inceptionYear>
 
     <scm>
         <connection>scm:git:https://github.com/codetrails/ctrlflow-aer-client.git</connection>

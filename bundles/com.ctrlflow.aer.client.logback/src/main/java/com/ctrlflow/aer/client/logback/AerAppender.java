@@ -206,12 +206,12 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
     }
 
     @VisibleForTesting
-    void sendIncident(Incident i) {
+    void sendIncident(Incident incident) {
         try {
-            SimpleAerClient.send(i, url);
+            SimpleAerClient.send(incident, url);
         } catch (IOException e) {
             addStatus(
-                    new WarnStatus(String.format("Failed to send incident '%s'", i.getStatus().getMessage()), this, e));
+                    new WarnStatus(String.format("Failed to send incident '%s'", incident.getStatus().getMessage()), this, e));
         }
     }
 
@@ -230,7 +230,6 @@ public class AerAppender extends AppenderBase<ILoggingEvent> {
     public void setHistorySize(int historySize) {
         this.historySize = historySize;
         this.history = EvictingQueue.create(historySize);
-
     }
 
     public String getProductId() {
