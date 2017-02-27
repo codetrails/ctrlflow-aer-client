@@ -194,11 +194,22 @@ public class AerAppender extends AbstractAppender {
     protected Bundle toBundle(ExtendedClassInfo classPackagingData) {
         Bundle bundle = new Bundle();
         String codeLocation = classPackagingData.getLocation();
-        // remove any file extension
-        int indexOfLastDot = codeLocation.lastIndexOf(".");
-        if (indexOfLastDot != -1) {
-            codeLocation = codeLocation.substring(0, indexOfLastDot);
+        if (codeLocation.endsWith("/")) {
+        	// when using bundles from the workspace instead of jars
+        	codeLocation = codeLocation.substring(0, codeLocation.length() - 1);
         }
+        else {
+        	// remove any file extension
+        	int indexOfLastDot = codeLocation.lastIndexOf(".");
+        	if (indexOfLastDot != -1) {
+        		codeLocation = codeLocation.substring(0, indexOfLastDot);
+        	}
+        }
+		// log4j2 uses package.getImplementationVersion() to determine Version of a bundle. The
+		// Version is read from the Manifest.mf Implementation-Version property.
+		// In eclipse its not present when using bundles from within the workspace because the
+		// Manifest is not copied to the bin directory.
+		// It should work in the deployed product.
         String version = classPackagingData.getVersion();
         // assuming codelocation = name-version.jar
         int indexOfVersion = codeLocation.lastIndexOf("-" + version);
@@ -212,8 +223,12 @@ public class AerAppender extends AbstractAppender {
 
     private void sendIncident(Incident incident) {
         try {
-            SimpleAerClient.send(incident, url);
-        } catch (IOException e) {
+			String send = SimpleAerClient.send(incident, url);
+			if (send.contains("Error")) {
+				super.error(String.format("Failed to send incident '%s'", incident.getStatus().getMessage()));
+			}
+		}
+		catch (IOException e) {
             super.error(String.format("Failed to send incident '%s'", incident.getStatus().getMessage()), e);
         }
     }
