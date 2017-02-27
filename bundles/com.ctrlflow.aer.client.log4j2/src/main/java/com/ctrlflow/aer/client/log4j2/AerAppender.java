@@ -223,8 +223,12 @@ public class AerAppender extends AbstractAppender {
 
     private void sendIncident(Incident incident) {
         try {
-            SimpleAerClient.send(incident, url);
-        } catch (IOException e) {
+			String send = SimpleAerClient.send(incident, url);
+			if (send.contains("Error")) {
+				super.error(String.format("Failed to send incident '%s'", incident.getStatus().getMessage()));
+			}
+		}
+		catch (IOException e) {
             super.error(String.format("Failed to send incident '%s'", incident.getStatus().getMessage()), e);
         }
     }
