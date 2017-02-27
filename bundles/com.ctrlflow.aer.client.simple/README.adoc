@@ -1,0 +1,31 @@
+Ctrlflow AER Simple Client
+==========================================
+
+If you are developing a *Java application* that uses none of the logging frameworks supported out-of-the-box, you can use the Ctrlflow AER Simple Client to send caught exceptions to your server.
++
+*Examples* on how to use this client are maintained in a https://github.com/codetrails/ctrlflow-aer-client-examples[separate project].
+
+For more information please visit the https://github.com/codetrails/ctrlflow-aer-client[main page].
+
+Jackson
+-------
+
+This client uses Gson to serialize objects to JSON for sending them to the server.
+
+If you want to use Jackson, you can replace the Gson call in SimpleAerClient with:
+
+[source,java]
+----
+ObjectMapper mapper = new ObjectMapper();
+mapper.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true);
+mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+mapper.setSerializationInclusion(Include.NON_NULL);
+mapper.setVisibilityChecker(mapper.getSerializationConfig().getDefaultVisibilityChecker()
+	.withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+	.withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+	.withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+	.withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
+mapper.addMixInAnnotations(StackTraceElement.class, StackTraceElementMixIn.class);
+----
+
+
